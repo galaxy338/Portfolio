@@ -10,21 +10,55 @@
     <meta name="theme-color" content="#c19a6b">
     <meta property="og:image" content="https://pterodactyl-website.pages.dev/gallery/logo-icon.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@300;500&family=Bangers&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
             --bg: #1a1412;
-            --accent: #c19a6b; /* Warm Latte */
-            --espresso: #3e2723; /* Deep Coffee Brown */
+            --accent: #c19a6b; 
+            --espresso: #3e2723; 
             --text: #f5f5f5;
             --muted: #57534e;
             --grid: rgba(193, 154, 107, 0.04);
             --console-bg: rgba(0, 0, 0, 0.7);
             --online: #4ade80;
             --offline: #f87171;
+            --border-style: 1px solid var(--accent);
+            --panel-shadow: none;
+        }
+
+        /* --- MANGA MODE OVERRIDES --- */
+        body.manga-mode {
+            --bg: #ffffff;
+            --accent: #000000;
+            --espresso: #000000;
+            --text: #000000;
+            --muted: #333;
+            --console-bg: #fff;
+            --grid: radial-gradient(#000 1px, transparent 0); /* Halftone effect */
+            --border-style: 4px solid #000;
+            --panel-shadow: 10px 10px 0px #000;
+            font-family: 'Bangers', cursive;
+            background-size: 20px 20px;
+        }
+
+        body.manga-mode h1 {
+            background: none !important;
+            -webkit-text-fill-color: #000 !important;
+            text-shadow: 4px 4px 0px #fff, 8px 8px 0px #000;
+            letter-spacing: 2px;
+        }
+
+        body.manga-mode .project-panel, body.manga-mode .console, body.manga-mode .server-card {
+            border: var(--border-style) !important;
+            box-shadow: var(--panel-shadow);
+            background: #fff !important;
+        }
+
+        body.manga-mode .panel-img {
+            filter: grayscale(1) contrast(200%) !important;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -36,18 +70,21 @@
             overflow-x: hidden;
             background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
             background-size: 50px 50px;
+            transition: background 0.5s ease;
         }
 
         /* --- Navbar --- */
         nav { display: flex; justify-content: flex-end; padding: 30px 5%; position: fixed; width: 100%; z-index: 100; gap: 15px; }
-        .nav-btn { color: var(--accent); text-decoration: none; font-family: 'JetBrains Mono'; font-size: 0.7rem; padding: 8px 18px; border: 1px solid var(--accent); letter-spacing: 2px; transition: 0.3s; background: rgba(26, 20, 18, 0.9); backdrop-filter: blur(5px); display: flex; align-items: center; gap: 8px; }
+        .nav-btn { cursor: pointer; color: var(--accent); text-decoration: none; font-family: 'JetBrains Mono'; font-size: 0.7rem; padding: 8px 18px; border: var(--border-style); letter-spacing: 2px; transition: 0.3s; background: rgba(26, 20, 18, 0.9); backdrop-filter: blur(5px); display: flex; align-items: center; gap: 8px; }
         .nav-btn:hover { background: var(--accent); color: #000; }
+        
+        /* Manga Style Specific Nav Button */
+        #manga-toggle { background: var(--accent); color: #000; border: 2px solid #000; }
 
         /* --- Hero --- */
         .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 20px 60px; }
         .hero-subtitle { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; font-weight: 500; }
         
-        /* --- THE COFFEE FADE H1 --- */
         h1 {
             font-size: clamp(3rem, 10vw, 6.5rem);
             font-weight: 700;
@@ -55,28 +92,14 @@
             line-height: 0.9;
             margin-bottom: 40px;
             letter-spacing: -2px;
-            
-            /* The Gradient & Animation Effect */
-            background: linear-gradient(
-                90deg,
-                #ffffff 0%,       /* Foam White */
-                var(--accent) 25%, /* Latte Amber */
-                var(--espresso) 50%, /* Deep Espresso */
-                var(--accent) 75%, /* Latte Amber */
-                #ffffff 100%      /* Foam White loop */
-            );
-            background-size: 200% auto; /* Make wider for animation */
+            background: linear-gradient(90deg,#ffffff 0%,var(--accent) 25%,var(--espresso) 50%,var(--accent) 75%,#ffffff 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: coffeeFade 8s linear infinite; /* Smooth, slow flow */
+            animation: coffeeFade 8s linear infinite;
         }
 
-        /* Keyframes for the gradient animation */
-        @keyframes coffeeFade {
-            to {
-                background-position: 200% center;
-            }
-        }
+        @keyframes coffeeFade { to { background-position: 200% center; } }
 
         /* --- Neofetch Console --- */
         .console { width: 95%; max-width: 850px; background: var(--console-bg); border: 1px solid var(--muted); border-radius: 4px; font-family: 'JetBrains Mono', monospace; padding: 30px; text-align: left; backdrop-filter: blur(10px); margin-bottom: 60px; border-left: 4px solid var(--accent); }
@@ -122,10 +145,14 @@
         @media (max-width: 900px) { .project-panel { flex-direction: column; } .ascii-logo { display: none; } }
     </style>
 </head>
-<body>
+<body id="body-main">
 
     <nav>
-        <a href="https://github.com/galaxy338/Portfolio" target="_blank" class="nav-btn">
+        <div id="manga-toggle" class="nav-btn" onclick="toggleMangaMode()">
+            <i class="fa-solid fa-pencil"></i>
+        </div>
+
+        <a href="https://github.com/galaxy338/Portfolio" target="_blank" class="nav-btn" id="source-btn">
             <i class="fa-solid fa-pencil"></i> EDIT SOURCE
         </a>
     </nav>
@@ -182,11 +209,9 @@ _)      \.___.,|     .'
 
     <section class="network-section">
         <h2 class="hero-subtitle" data-aos="fade-up">Network Infrastructure</h2>
-        
         <div class="map-container" data-aos="zoom-in">
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" class="world-map">
         </div>
-
         <div class="server-grid">
             <div class="server-card" data-aos="fade-up">
                 <div class="status-indicator"><div class="dot offline"></div> Offline</div>
@@ -216,31 +241,17 @@ _)      \.___.,|     .'
             <img src="https://pterodactyl-website.pages.dev/gallery/logo-icon.png" style="width:75px;">
             <i class="fa-brands fa-js"></i>
             <i class="fa-solid fa-server"></i>
-            <i class="fa-brands fa-python"></i>
-            <i class="fa-brands fa-node-js"></i>
-            <i class="fa-brands fa-docker"></i>
-            <i class="fa-brands fa-linux"></i>
-            <img src="https://pterodactyl-website.pages.dev/gallery/logo-icon.png" style="width:75px;">
         </div>
     </section>
 
     <section class="projects">
         <h2 data-aos="fade-up" style="text-align:center; margin-bottom:80px; font-size:3.5rem;">My Projects</h2>
-        
         <a href="https://github.com/sharmastudios" class="project-panel" data-aos="fade-right">
             <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800')"></div>
             <div class="panel-content">
                 <h3>Sharma Studios</h3>
                 <p>Developing high-performance software and scalable infrastructure solutions.</p>
             </div>
-        </a>
-
-        <a href="https://github.com/SharmaStudios/multi-egg" class="project-panel" data-aos="fade-left">
-            <div class="panel-content">
-                <h3>Afernact Multi-Egg</h3>
-                <p>Open-source Pterodactyl egg configurations for multi-node deployments.</p>
-            </div>
-            <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1605745341112-85968b193ef5?auto=format&fit=crop&w=800')"></div>
         </a>
     </section>
 
@@ -250,6 +261,25 @@ _)      \.___.,|     .'
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init({ duration: 1200, once: true });</script>
+    <script>
+        AOS.init({ duration: 1200, once: true });
+
+        function toggleMangaMode() {
+            const body = document.getElementById('body-main');
+            const sourceBtn = document.getElementById('source-btn');
+            
+            body.classList.toggle('manga-mode');
+
+            if (body.classList.contains('manga-mode')) {
+                // Change source button text and link
+                sourceBtn.innerHTML = 'o / SOURCE /';
+                sourceBtn.href = 'portfolio1';
+            } else {
+                // Revert to original
+                sourceBtn.innerHTML = '<i class="fa-solid fa-pencil"></i> EDIT SOURCE';
+                sourceBtn.href = 'https://github.com/galaxy338/Portfolio';
+            }
+        }
+    </script>
 </body>
 </html>
