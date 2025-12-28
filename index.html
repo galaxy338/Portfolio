@@ -16,7 +16,7 @@
             --text: #f5f5f5;
             --muted: #57534e;
             --grid: rgba(193, 154, 107, 0.05);
-            --console-bg: rgba(0, 0, 0, 0.85);
+            --console-bg: rgba(0, 0, 0, 0.9);
             --coffee-shade-1: #6f4e37;
             --coffee-shade-2: #c19a6b;
         }
@@ -77,11 +77,7 @@
             font-weight: 700;
         }
 
-        body.pencil-mode .nav-btn {
-            background: #fff;
-            filter: url(#sketchy-border);
-            border: 2px solid #000;
-        }
+        body.pencil-mode .nav-btn { background: #fff; filter: url(#sketchy-border); border: 2px solid #000; }
 
         /* --- Hero --- */
         .hero {
@@ -114,32 +110,37 @@
             -webkit-text-fill-color: transparent;
         }
 
-        body.pencil-mode h1.coffee-name {
-            background: none;
-            -webkit-text-fill-color: initial;
-            color: #1a1a1a;
-            filter: url(#sketchy-text);
-        }
+        body.pencil-mode h1.coffee-name { background: none; -webkit-text-fill-color: initial; color: #1a1a1a; filter: url(#sketchy-text); }
 
-        /* --- Console: Forced Landscape for PC --- */
+        /* --- Landscape Console PC --- */
         .console {
             width: 100%;
-            max-width: 850px; /* Wide landscape feel */
+            max-width: 900px;
             background: var(--console-bg);
             border: 1px solid var(--muted);
-            border-left: 4px solid var(--accent);
+            border-top: 30px solid #332a26; /* Terminal Header Bar */
             padding: 35px;
             margin-bottom: 50px;
-            transition: 0.3s;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        }
+
+        .console::before {
+            content: "● ● ●";
+            position: absolute;
+            top: -24px;
+            left: 15px;
+            color: var(--accent);
+            font-size: 10px;
+            letter-spacing: 2px;
         }
 
         .console-pre {
             font-family: 'JetBrains Mono', monospace;
-            display: flex;
-            flex-direction: row; /* Landscape layout */
-            gap: 50px;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 220px 1fr; /* True landscape split */
+            gap: 40px;
+            align-items: center;
             white-space: pre;
         }
 
@@ -147,63 +148,110 @@
             color: #e95420; 
             font-size: 10px;
             line-height: 1.1;
-            flex-shrink: 0;
         }
 
-        .fetch-info { color: var(--text); font-size: 0.9rem; line-height: 1.8; text-align: left; }
+        .fetch-info { color: var(--text); font-size: 0.95rem; line-height: 1.8; text-align: left; }
         .fetch-info span { color: var(--accent); font-weight: bold; }
 
-        /* --- Marquee --- */
+        /* --- THINGS I KNOW Section --- */
+        .section-title {
+            text-align: center;
+            font-family: 'JetBrains Mono';
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
         .marquee-section {
-            padding: 60px 0;
+            padding: 80px 0;
             background: rgba(0,0,0,0.2);
             border-top: 1px solid var(--grid);
             border-bottom: 1px solid var(--grid);
             overflow: hidden;
         }
+
         .marquee-track {
             display: flex;
             gap: 80px;
             animation: scroll 30s linear infinite;
             width: max-content;
         }
-        .marquee-track i { font-size: 3rem; color: var(--muted); transition: 0.3s; }
-        .marquee-track i:hover { color: var(--accent); transform: scale(1.2); }
+
+        .marquee-track i { font-size: 3.5rem; color: var(--muted); transition: 0.4s; }
+        .marquee-track i:hover { color: var(--accent); transform: scale(1.2) rotate(5deg); }
+
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* --- Projects (Images are Back) --- */
-        .projects { padding: 100px 5%; }
+        /* --- PROJECTS WITH ICONS & IMAGES --- */
+        .projects { padding: 120px 5%; }
+        .projects-header {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 80px;
+            letter-spacing: 2px;
+        }
+
         .project-panel {
             display: flex;
             border: 1px solid var(--grid);
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             text-decoration: none;
             color: inherit;
             background: rgba(255,255,255,0.02);
             transition: 0.5s;
             overflow: hidden;
+            position: relative;
         }
 
         .panel-img {
             flex: 1;
-            height: 350px;
+            height: 400px;
             background-size: cover;
             background-position: center;
-            filter: grayscale(1) brightness(0.6);
-            transition: 0.7s;
+            filter: grayscale(1) brightness(0.4);
+            transition: 0.8s ease;
+            position: relative;
         }
-        .project-panel:hover .panel-img { filter: grayscale(0) brightness(0.9); }
 
-        .panel-content { flex: 1; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
-        .panel-content h3 { font-size: 2.2rem; color: var(--accent); margin-bottom: 15px; }
+        /* Overlay Icon inside Image */
+        .panel-img::after {
+            content: "\f121"; /* Default code icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.2;
+            transition: 0.5s;
+        }
 
-        /* Mobile Adjustments */
-        @media (max-width: 800px) {
-            .ascii-logo { display: none; } /* Hide logo on mobile */
-            .console-pre { flex-direction: column; text-align: center; }
-            .fetch-info { text-align: center; margin: 0 auto; }
+        .egg-icon::after { content: "\f7fb"; } /* Egg icon for Multi-egg */
+
+        .project-panel:hover .panel-img { filter: grayscale(0) brightness(0.8); }
+        .project-panel:hover .panel-img::after { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+
+        .panel-content { flex: 1; padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .panel-content h3 { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; }
+        .panel-content p { font-size: 1.1rem; line-height: 1.7; opacity: 0.8; }
+
+        body.pencil-mode .project-panel { border: 2px solid #000; filter: url(#sketchy-border); background: #fff; }
+
+        footer { padding: 80px 5%; text-align: center; border-top: 1px solid var(--grid); }
+
+        /* Mobile Logic */
+        @media (max-width: 900px) {
+            .ascii-logo { display: none; }
+            .console-pre { grid-template-columns: 1fr; text-align: center; }
+            .fetch-info { margin: 0 auto; text-align: center; }
             .project-panel { flex-direction: column; }
-            .panel-img { height: 200px; }
+            .panel-img { height: 250px; }
+            .panel-content { padding: 30px; }
         }
     </style>
 </head>
@@ -266,6 +314,7 @@ _)      \.___.,|     .'
         </div>
     </section>
 
+    <div class="section-title">THINGS I KNOW...</div>
     <section class="marquee-section">
         <div class="marquee-track">
             <i class="fa-brands fa-python"></i>
@@ -286,26 +335,28 @@ _)      \.___.,|     .'
     </section>
 
     <section class="projects">
+        <h2 class="projects-header" data-aos="fade-up">My Projects</h2>
+
         <a href="https://github.com/sharmastudios" class="project-panel" data-aos="fade-right">
             <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')"></div>
             <div class="panel-content">
-                <h3>Sharma Studios</h3>
-                <p>Infrastructure and backend orchestration. Focused on high-performance compute nodes.</p>
+                <h3><i class="fa-solid fa-folder-open" style="font-size: 1.5rem; margin-right: 15px;"></i> Sharma Studios</h3>
+                <p>Leading the next generation of scalable infrastructure and high-performance software engineering.</p>
             </div>
         </a>
 
         <a href="https://github.com/SharmaStudios/multi-egg" class="project-panel" data-aos="fade-left">
             <div class="panel-content">
-                <h3>Multi-Egg System</h3>
-                <p>Advanced Pterodactyl automation tools for high-scale environments.</p>
+                <h3><i class="fa-solid fa-egg" style="font-size: 1.5rem; margin-right: 15px;"></i> Multi-Egg System</h3>
+                <p>A specialized automation suite for Pterodactyl, managing multi-node orchestration with ease.</p>
             </div>
-            <div class="panel-img" style="background-image: url('https://images.unsplash.com/photo-1605745341112-85968b193ef5?q=80&w=2071&auto=format&fit=crop')"></div>
+            <div class="panel-img egg-icon" style="background-image: url('https://images.unsplash.com/photo-1605745341112-85968b193ef5?q=80&w=2071&auto=format&fit=crop')"></div>
         </a>
     </section>
 
     <footer>
         <div style="font-family: 'JetBrains Mono'; margin-bottom: 10px; color: var(--accent);">galaxy338.is-a.dev</div>
-        <div style="opacity: 0.5; font-size: 0.8rem;">Made by Galaxy © 2025</div>
+        <div style="opacity: 0.5; font-size: 0.8rem;">© 2025 Sharma Sai Swaroop</div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
